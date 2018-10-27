@@ -1,0 +1,130 @@
+﻿-------------------------------------------------------------------------
+- Descriptions of the Disease Analysis tools implemented into GeoCloud 
+- with a summary, url, example url, and and example return 
+- The tools were implemented by Huibo and this is the descriptions
+- copied from our email exchanges.
+-------------------------------------------------------------------------
+
+I've implement some disease analysis tools.
+Please help to implement the front-end part.
+
+There are 7 tools this time, 4 tools are Measuring Geographic Distribution type and 3 tools are Clusters type.
+These tools are same as the functions in Analyze tab.
+I will give you the request url and return data type respectively.
+
+Measuring Geographic Distribution (4 tools)
+1. Mean central tool
+Summary:   The mean center is the average x- and y-coordinate of all the features in the study area.
+url:             analysis/geodistribution/meanctr/[dataset ID]/1/[weight column]/   weight column could be none
+test url:       http://131.94.133.233:8000/analysis/geodistribution/meanctr/2095/1/mortality/
+                  http://131.94.133.233:8000/analysis/geodistribution/meanctr/2095/1/none/
+return type: Geojson (just one point)
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [-82.695943215879865, 28.948088467777772]}, "type": "Feature", "properties": {}, "id": null}]}
+how to display:display as point
+
+2.median Feature Tool
+Summary:   The median point is a location that minimizes travel from it to all other features in the dataset.
+url:             analysis/geodistribution/medianctr/[dataset ID]/1/[weight column]/    weight column could be none
+test url:       http://131.94.133.233:8000/analysis/geodistribution/medianctr/2095/1/mortality/
+return type: Geojson  (just one point)
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [-82.388618642581434, 28.982653076056661]}, "type": "Feature", "properties": {}, "id": null}]}
+how to display:display as point
+
+3. Standard Distance tool
+Summary:   The standard distance tool provides a measure of the feature distribution around their mean center.
+url:             analysis/geodistribution/stddistance/[dataset ID]/1/[weight column]/[std]/          weight column could be none
+test url:       http://131.94.133.233:8000/analysis/geodistribution/stddst/2095/1/mortality/1.0/
+return type: Geojson (just one polygon)
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[-80.382477172218003, -80.382477172218003], [-80.382829524301968, -80.382829524301968], [-80.383886473224038, -80.383886473224038],....]},"type": "Feature", "properties": {}, "id": null}]}
+how to display:display as polygon
+
+4.Distributional trends 
+Summary:   The Distributional trends tool provides an ellipse to give a measure of the feature distribution and trends.
+url:             analysis/geodistribution/trends/[dataset ID]/1/[weight column]/[std]/    weight column could be none
+test url:       http://131.94.133.233:8000/analysis/geodistribution/trends/2095/1/mortality/1.0/
+return type: Geojson(just one polygon)
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[-80.382477172218003, -80.382477172218003], [-80.382829524301968, -80.382829524301968], [-80.383886473224038, -80.383886473224038],....]},"type": "Feature", "properties": {}, "id": null}]}
+how to display:display as polygon
+
+ Clusters (3 tools)
+1. Spatial cluster tool 
+Summary:   The Spatial cluster tool provides several clusters which is a set of neighboring areas and in clusters far more cases appear. 
+url:              analysis/cluster/Cluster/[dataset ID]/1/[population column name ]/[disease case column name]/ 
+test url:       http://131.94.133.233:8000/analysis/cluster/Cluster/2085/1/pop/casenum/
+return type: Geojson
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [-82.283957315861898, 30.330529539022905]}, "type": "Feature", "properties": {"cluster": "1.000000", "pvalue": "0.000012", "statistic": 5.0}, "id": null},.........]}
+how to display: display as point, and when  mouse on the point show the p_value
+
+2. HotSpot analysis tool
+Summary:   The Hotspot analysis tool identifies hot spot(cluster with high value) and cold spot(cluster with low value) using  the Getis-Ord Gi* statistic method.
+url:              analysis/cluster/hotspot/[dataset ID]/1/[column for calculation]/     
+test url:        http://131.94.133.233:8000/analysis/cluster/hotspot/2085/1/mortality/
+return type: Geojson
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[[-82.4052596410653, 29.485096947340601], [-82.554769984175493, 29.4809985225648], ........]]}, "type": "Feature", "properties": {"pval": 0.99563152879870154, "gival": 2.6221794104909093}, "id": null}, ..............]}
+how to display:  display as polygon, let user choose gival or pval as legend
+
+3.Cluster and Outlier Analysis
+Summary:     The Cluster and Outlier Analysis identifies hot spot(cluster with high value) , cold spot(cluster with low value)  and outlier.This tool using Anselin Local Moran's I statistic method. 
+url:               analysis/cluster/clusteroutlier/[dataset ID]/1/[calccol]/
+test url:         http://131.94.133.233:8000/analysis/cluster/ClusterandOuter/2085/1/mortality/
+return type:  Geojson
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[[-82.4052596410653, 29.485096947340601], [-82.554769984175493, 29.4809985225648], [-82.555320298486393, 29.5392463110521]...........]]}, "type": "Feature", "properties": {"pval": 0.73619452857697665, "zval": 0.63165713595761952, "localMoranI": 0.93463559513309002}, "id": null}.............................]}
+how to display:  display as polygon, let user choose zvall, pval or localMoranI as legend
+
+
+I've also implemented two tools Disease map and Smrmap. Please help add them to 'Disease Analysis' menu.
+
+1. Disease map
+Summary:      The input of disease map is the cases/dead number and population number of each area, and the output is the    
+                      incidence/mortality.
+url:                 analysis/map/diseasemap/dataset/1/[popcol]/[casecol]/[site_name]/  site_name could be none
+test url:          http://131.94.133.233:8000/analysis/map/diseasemap/2085/1/pop/casenum/None/ or
+                     http://131.94.133.233:8000/analysis/map/diseasemap/2085/1/pop/casenum/name/
+return type:    Geojson
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[[-82.4052596410653, 29.485096947340601], [-82.554769984175493, 29.4809985225648].....]]}, "type": "Feature", "properties": {"rate": 70.015753544547522, "percent": 0.21962025981485828, "nm": "Alachua", "largestpercent": 0.78037974018514178}, "id": null},.....]}
+Properties explanation: 
+                               rate: number of cases per 100,000 population
+                               percent: equals  (the rate of this site)/[(the rate of this site)+(the largest rate)]
+                               nm: the site name
+                               largest percent: equals (the largest rate)/[(the rate of this site)+(the largest rate)]
+how to display: Just like 'Mortality ratio map' in disease page http://131.94.133.223/disease/, when user click one county/site, the pie chart displayed.
+                       
+2. SMR map
+summary:    The standardized mortality ratio(SMR), is expressed as either a ratio  quantifying the increase or decrease in mortality of a study                   cohort with respect to the general population.
+url:              analysis/map/smrmap/dataset/1/[popcol]/[casecol]/[site_name]   site_name could be none
+test url:      http://131.94.133.233:8000/analysis/map/smrmap/2085/1/pop/casenum/None/ 
+                  http://131.94.133.233:8000/analysis/map/smrmap/2085/1/pop/casenum/name/
+return type: Geojson 
+{"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[[-82.4052596410653, 29.485096947340601], [-82.554769984175493, 29.4809985225648].......]]}, "type": "Feature", "properties": {"expected": 219.55857124315514, "observed": 172.0, "SMR": 0.78339004952584923, "nm": "Alachua"}, "id": null},....]}
+how to display: just like 'SMR map' in disease page http://131.94.133.223/disease/, when user click one county/site, the histogram chart                                displayed.
+
+For the two tools I thinks we can let user to choose the result legend group number(color range classes). User can choose 6, 8 or 10 groups for the legend.
+
+1. Linear regression
+Summary:      Linear regreesion is an approach to modeling the relationship between a dependent variable y and one or more explanatory            
+                     variables denoted x. 
+url:                analysis/regresson/linear/dataset/1/[y]/[x1&x2&x3]/  
+                     y is the denpendent variable, and x1&x2&x3 denotes three explanatory variables x1, x2, x3.
+test url:         http://131.94.133.233:8000/analysis/regression/linear/3095/1/mortality/income&house_price/
+return type:    json
+result:          {"rst": " The model is mortality =..........................................., p-value = 0.04916"}
+how to display: Just show the text in the result.
+
+2. Spatial auto-regression lag model
+Summary:    Maximum likelihood estimation of spatial simultaneous autoregressive lag and mixed models of the form: 
+                   y = rho W y + X beta + e
+url:              analysis/regresson/spatialauto/1/[y]/[x1,x2,x3]/
+test url:       http://131.94.133.233:8000/analysis/regression/spatialauto/3095/1/mortality/income&house_price/
+return type:  json
+result:         {"rst": " The model is mortality =..........................................."}
+how to display: Just show the text in the result.
+
+3. Spatial auto-regression error model
+Summary:         Maximum likelihood estimation of spatial simultaneous autoregressive error models of the form:
+y = X beta + u, u = lambda W u + e
+
+url:                    analysis/regresson/errorauto/1/[y]/[x1,x2,x3]/
+test url:             http://131.94.133.233:8000/analysis/regression/errorauto/3095/1/mortality/income&house_price/
+result:              {"rst": " The model is mortality =..........................................."}
+how to display: Just show the text in the result.
+

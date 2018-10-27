@@ -1,0 +1,295 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8"> 
+    <title>TerraFly GeoCloud</title> 
+ 
+    <!-- Claro css theme for Dojo --> 
+    <!--<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dijit/themes/claro/claro.css" media="screen"> --> 
+    <link rel="stylesheet" href="dojo/dijit/themes/claro/claro.css" media="screen"> 
+    <link rel="stylesheet" href="css/geocloud.css" media="screen"> 
+    <!-- load dojo and provide config via data attribute --> 
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojo/dojo.js" 
+                data-dojo-config="async: true, parseOnLoad:true"> 
+        </script>--> 
+    <!--script type="text/javascript" src="js/mapapi.js"></script--> 
+    <script type = "text/javascript" src="http://experiment2.cs.fiu.edu/hterramap/test/mapapi.js"></script>
+    <script src="dojo/dojo/dojo.js" 
+        data-dojo-config="async: true, parseOnLoad:true"> 
+    </script> 
+    <!--<script src="http://d3js.org/d3.v3.min.js"></script>--> 
+     <!--<script src="d3/d3.v3.min.js"></script>-->  
+    <script type="text/javascript" src="lib/colorbrewer.js"></script> 
+    <!-- Our own javascript --> 
+    <script type="text/javascript" src="js/mapApp.js"></script> 
+    <script type="text/javascript" src="js/TFCharts.js"></script> 
+    <script type="text/javascript" src="js/geo_terra.js"></script> 
+    <script type="text/javascript" src="js/GeoAnalysis.js"></script> 
+    <script type="text/javascript" src="js/GeoCloud.js"></script> 
+    <script type="text/javascript" src="js/GeoParsers.js"></script> 
+    <script type="text/javascript" src="js/GeoDrawing.js"></script> 
+    <script type="text/javascript" src="js/GeoColors.js"></script> 
+    <script type="text/javascript" src="js/TerraFlyWrappers.js"></script> 
+    <script type="text/javascript" src="js/GeoData.js"></script> 
+    <script type="text/javascript" src="js/DiseaseAnalysis.js"></script> 
+</head> 
+<body class="claro" onload="on_pageLoad()"> 
+    <div id="appLayout"> 
+        <div id="banner" class="center"> 
+            <img src="imgs/terrafly_logo80.jpg"> 
+            <span>GeoCloud - The online spatial data analysis system</span> 
+        </div> 
+        <div id="head"> 
+            <div id="menu" class="center" 
+                data-dojo-type="dijit.MenuBar"> 
+                <!-- Menu button --> 
+                <div data-dojo-type="dijit.PopupMenuBarItem"> 
+                    <!-- Name of the menu button --> 
+                    <span>Data</span> 
+                    <!-- Drop down menu where individual menu items are added --> 
+                    <div data-dojo-type="dijit.DropDownMenu" id="fileMenu"> 
+                        <!-- menu item   the data-dojo-props"onClick:function(){ function call here} is where you add what happens when it is clicked --> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){uploadDataSetButton();}">Upload dataset</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){existingDataSetButton();}">Create from existing</div> 
+                    </div> 
+                </div> 
+                <div data-dojo-type="dijit.PopupMenuBarItem"> 
+                    <span>Edit</span> 
+                    <div data-dojo-type="dijit.DropDownMenu" id="editMenu"> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){showExpression();}">Add Column</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){infoWindow();}">Info window</div> 
+                    </div> 
+ 
+                </div> 
+                <div data-dojo-type="dijit.PopupMenuBarItem"> 
+                    <span>Share</span> 
+                    <div data-dojo-type="dijit.DropDownMenu" id="ExportMenu"> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){getUrl();}">URL</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){alert('get Iframe');}">Iframe</div> 
+                    </div> 
+                </div> 
+                <div data-dojo-type="dijit.PopupMenuBarItem"> 
+                    <span>Analysis Models</span> 
+                    <div data-dojo-type="dijit.DropDownMenu" id="analyzeMenu"> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){kriging();}">Kriging</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectDataSet();}">Auto Correlation</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectMeanCenter();}">Mean Center tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectMedianFeature();}">Median Feature tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectStandardDistance();}">Standard Distance tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectDistributionalTrends();}">Distributional trends</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectSpatialCluster();}">Spatial Cluster tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectHotSpot();}">HotSpot Analysis tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectClusterOutlier();}">Cluster and Outlier Analysis</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectDiseaseMap();}">Disease Map tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectSMRMap();}">SMR Map tool</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectLinearRegression();}">Linear Regression</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectAutoRegressionLag();}">Spatial auto-regression lag model</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectAutoRegressionError();}">Spatial auto-regression error model</div> 
+                        <!-- Clustering Tool added by Peng 20140618--> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){selectClusteringTool();}">Clustering Tool</div> 
+                    </div> 
+                </div> 
+                <div data-dojo-type="dijit.PopupMenuBarItem"> 
+                    <span>Graph</span> 
+                    <div data-dojo-type="dijit.DropDownMenu" id="graphMenu"> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props='onClick:function(){ createScatterPlot();}'>Scatter Plot</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props='onClick:function(){ createPieChart();}'>Pie Chart</div> 
+                    </div> 
+                </div> 
+ 
+                <div data-dojo-type="dijit.PopupMenuBarItem"> 
+                    <span>MapQL</span> 
+                    <div data-dojo-type="dijit.DropDownMenu" id="sqlMapMenu"> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){restoreMap();}">Restore Map</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){createSQLRender();}">Create MapQL</div> 
+                        <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){createSQLRender();}">Semantic MapQL Editor</div> 
+                    </div> 
+                </div> 
+ 
+                <!-- 
+                    <div data-dojo-type="dijit.PopupMenuBarItem"> 
+						<span>Demo</span> 
+						<div data-dojo-type="dijit.DropDownMenu" id="demoMenu"> 
+							<div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){findTest();}">stl_hom</div> 
+						</div> 
+					</div> 
+                --> 
+ 
+            </div> 
+        </div> 
+        <div id="middle"> 
+            <div id="mainContent" class="center"> 
+                <div id="leftPanel" class="shadow"> 
+                    <div id="refBar"> 
+                        <button id="refData" class="btn" onclick="getDataSets()">refresh</button><span>Datasets</span> 
+                    </div> 
+                    <div id="datasets"> 
+                    </div> 
+                </div> 
+                <div id="centerMap" class="shadow"> 
+                </div> 
+                <div id="mapFrame" class="shadow" style="display: none"> 
+                </div> 
+            </div> 
+        </div> 
+ 
+        <div id="tail"> 
+            TerraFly GeoCloud 
+        </div> 
+    </div> 
+ 
+    <div id="tableDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'DataSet', style:'height:300px; width:300px'" class="terraFly"> 
+        <div id="data" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="style:'height:240px'"> 
+            Loading... 
+        </div> 
+    </div> 
+ 
+    <div id="chartDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'DataSet', style:'height:380px; width:500px'" class="terraFly"> 
+        <div id="charts" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="style:'height:310px'"> 
+        </div> 
+ 
+    </div> 
+    <div data-dojo-id="basicStandby" data-dojo-type="dojox.widget.Standby" data-dojo-props="target:'chartDialog'"></div> 
+    <div id="settingsDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'Settings', style:'height:400px; width:400px'" class="terraFly"> 
+        <div style="width: 385px; height: 350px"> 
+            <div id="settingsTabs" data-dojo-type="dijit.layout.TabContainer" style='height: 325px; width: 100%' tabstrip="true" tabposition="left-h"> 
+                <div id="generalSettings" data-dojo-type="dijit.layout.ContentPane" title="General" selected="true"> 
+                    General settings 
+                    <br /> 
+ 
+                </div> 
+                <div id="pointSettings" data-dojo-type="dijit.layout.ContentPane" title="Point"> 
+                    <label for="markerName">Marker Name:</label> 
+                    <select id="markerName" name="markerName"></select> 
+                    <fieldset> 
+                        <legend> 
+                            <input id="singleColor" type="radio" name="markerStyle" value="single" checked="checked" />Single color</legend> 
+                        <label for="color">Color:</label> 
+                        <input type="text" name="color" class="color" id="color" value="#ffff00" /> 
+                    </fieldset> 
+                    <fieldset> 
+                        <legend> 
+                            <input id="rangeColor" type="radio" name="markerStyle" value="range" />Color range</legend> 
+                        <label for="attribute">Attribute:</label> 
+                        <select id="attribute" name="attribute"></select> 
+                        <br /> 
+                        <label for="rangeValues">Colors:</label> 
+                        <select id="rangeValues"> 
+                            <option value="custom">Custom</option> 
+                            <option value="red_blue">Red-Blue</option> 
+                            <option value="blue_yellow">Blue-Yellow</option> 
+                            <option value="red_green_blue">Red-Green-Blue</option> 
+                        </select> 
+                        <br /> 
+                        <label for="lowColor">Range:</label><input type="text" name="color" class="color" id="lowColor" value="#ff0000" />- 
+                                    <input type="text" name="color" class="color" id="highColor" value="#0000ff" /> 
+                    </fieldset> 
+                    <fieldset> 
+                        <legend> 
+                            <input id="imgMarker" type="radio" name="markerStyle" value="imgMarker" />Image Marker</legend> 
+                        <input id="markerPoint" type="radio" name="markerImage" /><img src="imgs/markerPoint25.png" /> 
+                        <input id="pinMarker" type="radio" name="markerImage" /><img src="imgs/pinMarker.png" /> 
+                    </fieldset> 
+                </div> 
+                <div id="polygonSettings" data-dojo-type="dijit.layout.ContentPane" title="Polygon"> 
+ 
+                    <label for="fillAlpha">Fill Alpha:</label> 
+                    <input type="text" name="alpha" id="fillAlpha" class="number" value="50" /> 
+                    <br /> 
+                    <label for="lineColor">Line Color:</label> 
+                    <input type="text" name="color" class="color" id="lineColor" value="#ffff00" /> 
+                    <br /> 
+                    <label for="lineWidth">Line Width:</label> 
+                    <input type="text" name="lineWidth" class="number" id="lineWidth" value="1" /> 
+                    <br /> 
+                    <label for="lineAlpha">Line Alpha:</label> 
+                    <input type="text" name="lineAlpha" class="number" id="lineAlpha" value="50" /> 
+                    <fieldset> 
+                        <legend> 
+                            <input id="pSingle" type="radio" name="polygonColor" value="single" checked="checked" />Single Color</legend> 
+                        <label for="fillColor">Fill Color:</label> 
+                        <input type="text" name="color" class="color" id="fillColor" value="#aaccff" /> 
+                    </fieldset> 
+                    <fieldset> 
+                        <legend> 
+                            <input id="pRange" type="radio" name="polygonColor" value="range" />Color Range </legend> 
+                        <label for="pAttribute">Attritbute:</label> 
+                        <select id="pAttribute" name="attribute"></select> 
+                        <br /> 
+                        <label for="pRangeColors">Colors:</label> 
+                        <select id="pRangeColors"> 
+                            <option value="default">default</option> 
+                            <option value="red_blue">red blue</option> 
+                        </select> 
+                        <br /> 
+                        <label for="classes">Classes:</label> 
+                        <select id="classes" name="classes"> 
+                            <option value="5">5</option> 
+                            <option value="6">6</option> 
+                            <option value="7">7</option> 
+                        </select> 
+                    </fieldset> 
+                </div> 
+            </div> 
+            <button id="dataButton" class="btn">OK</button> 
+        </div> 
+    </div> 
+    <div id="wizardDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'Create from existing DataSet'"> 
+        <div data-dojo-type="dojox.widget.Wizard" data-dojo-props="style:'height:300px; width: 400px', doneButtonLabel:'Finished'"> 
+            <form id="existingDataSetParameters"> 
+                <div id="wizardDataSets" data-dojo-type="dojox.widget.WizardPane"> 
+                    Pick a dataset! 
+                </div> 
+                <div id="operations" data-dojo-type="dojox.widget.WizardPane"> 
+                    <!-- DataSet operations go here --> 
+                    DataSet Operations 
+                    <br /> 
+                    <input type="radio" name="methodname" value="clustering" onclick="onClusterClick()" /> 
+                    Clustering 
+                    <br /> 
+                </div> 
+                <div id="operationParameters" data-dojo-type="dojox.widget.WizardPane"> 
+                    Final Pane 
+                    <script type="dojo/method" data-dojo-event="doneFunction"> 
+                        wizardDone(); 
+                    </script> 
+                </div> 
+            </form> 
+        </div> 
+    </div> 
+    <div id="uploadDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'Upload a dataset'" class="terraFly"> 
+        <div data-dojo-type="dojox.widget.Wizard" data-dojo-props="style:'height:300px; width: 400px', doneButtonLabel:'Finished'"> 
+            <form method="post" action="http://localhost/GeoCloud/file.upload" id="uploadForm" enctype="multipart/form-data"> 
+                <div id="uploadFiles" data-dojo-type="dojox.widget.WizardPane"> 
+                    <label for="datasetName">Name:</label> 
+                    <input type="text" id="datasetName" name="datasetName" /><span id="datasetNameError" class="error"></span> 
+                    <br /> 
+                    <label for="author">Author: </label> 
+                    <input type="text" id="author" name="author" /> 
+                    <br /> 
+                    <label for="datasetDesc">Description: (optional) </label> 
+                    <textarea id="datasetDesc" name="datasetDesc" cols="30" rows="5"></textarea> 
+ 
+                </div> 
+                <div data-dojo-type="dojox.widget.WizardPane"> 
+                    <div id="fileError" class="error"></div> 
+                    <div id="files" data-dojo-type="dojox.form.uploader.FileList" data-dojo-props='uploaderId:"uploader"'></div> 
+                    <input name="uploadedfile" multiple="true" type="file" data-dojo-type="dojox.form.Uploader" label="Select Some Files" id="uploader" /> 
+                    <input type="submit" label="Submit" data-dojo-type="dijit.form.Button" /> 
+                </div> 
+            </form> 
+        </div> 
+    </div> 
+    <div id="krigingDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'Kriging'"> 
+        <div id="krigingContent" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="style:'height:310px; width: 400px'"> 
+        </div> 
+    </div> 
+    <div id="urlDialog" data-dojo-type="dijit.Dialog" data-dojo-props="title:'URL'"> 
+        <div id="urlContent" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="style:'height:200px'"> 
+            url: 
+            <input id="url" class="url" type="text" /> 
+        </div> 
+    </div> 
+ 
+</body> 
+</html> 

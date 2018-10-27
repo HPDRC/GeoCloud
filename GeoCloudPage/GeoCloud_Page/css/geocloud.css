@@ -1,0 +1,277 @@
+@import url("http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojox/layout/resources/FloatingPane.css");
+@import url("http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojox/layout/resources/ResizeHandle.css");
+@import url("http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojox/widget/Wizard/Wizard.css");
+@import url("http://ajax.googleapis.com/ajax/libs/dojo/1.8.3/dojox/form/resources/UploaderFileList.css");
+
+
+html, body {
+	height: 100%;
+}
+
+body
+{
+    background-color: #ffffff;
+	margin: 0px;
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: small;
+
+}
+
+#banner {
+	height: 80px;
+	font-size: 90%;
+}
+ 
+#appLayout {
+    height: 100%;
+	width: 100%;
+	color: #000000;
+}
+
+#middle{
+	background-color: #d3dee2;
+	height: 75%;
+	padding: 20px 0px;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
+#mainContent {
+	height: 100%
+}
+
+#leftPanel {
+	background-color: #ffffff;
+	color: #555555;
+	width: 200px;
+	height: 100%;
+	float: left;
+	margin-right: 20px;
+	overflow-x: hidden;
+}
+
+#refBar {
+	background-color: #456DA7;
+	padding: 5px 10px;
+    color: white;
+}
+
+.shadow {
+	box-shadow: 5px 5px 10px #999999;
+}
+
+#centerMap {
+	float: left;
+}
+
+
+#tail {
+	color: #CCC;
+	font-size: small;
+	float: right;
+	margin-right: 90px;
+}
+
+#menu {
+	border: none;
+	background-image: none;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+}
+
+#menu .dijitMenuItem {
+	color: #ffffff;
+}
+
+#nav, #data-list {
+	text-decoration: none;
+	list-style: none;
+	padding-left:0px;
+	margin-top: 0px;
+	margin-bottom:0px;
+	white-space: nowrap;
+    margin-left: 0px;
+}
+
+#datasetlist {
+}
+
+#nav  li {
+	display:inline;
+	width: 100px;
+}
+
+.btn{
+	color: #ffffff;
+	background-color: #4b9bd9;
+	border: 2px outset #A0B2FA;
+	border-radius: 5px;
+}
+
+.btn:hover
+{
+    border-style: inset;
+    background-color: #9EC8E8;
+}
+
+#data-list li {
+	cursor: pointer;
+	padding: 2px 5px;
+	border-bottom: 1px dotted #ccc;
+}
+
+#data-list li:last-of-type {
+	border-bottom: none;
+}
+
+.dataset-drawn {
+	background-color: #4b9bd9;
+	color: #ffffff;
+}
+
+.userdata .dataset-drawn {
+    background-color: rgb(78, 110, 134);
+}
+
+#data-list li:hover {
+	background-color: #247cc3;
+	color: #ffffff;
+}
+
+.claro .dijitSelectMenu .dijitMenuItemHover td, .claro .dijitSelectMenu .dijitMenuItemSelected td, .claro .dijitMenuItemHover, .claro .dijitMenuItemSelected {
+	background-color: #889cc6;
+	background-image: none;
+}
+
+.claro .dijitButton .dijitButtonNode, .claro .dijitDropDownButton .dijitButtonNode, .claro .dijitComboButton .dijitButtonNode, .claro .dijitToggleButton .dijitButtonNode {
+	background-color: #4b9bd9;
+	background-image: none;
+	color: #ffffff;
+}
+
+.claro .dijitButton .dijitButtonNode:hover, .claro .dijitDropDownButton .dijitButtonNode:hover, .claro .dijitComboButton .dijitButtonNode:hover, .claro .dijitToggleButton .dijitButtonNode:hover
+{
+    background-color: #9EC8E8;
+}
+
+.claro .dijitButtonDisabled .dijitButtonNode, .claro .dijitDropDownButtonDisabled .dijitButtonNode, .claro .dijitComboButtonDisabled .dijitButtonNode, .claro .dijitToggleButtonDisabled .dijitButtonNode {
+	background-color: #efefef;
+}
+
+#banner span {
+	position: absolute;
+	top: 50px;
+}
+
+#head, #menu {
+	background-color: #405072;
+}
+
+.error
+{
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px;
+    color: #D8000C;
+    background-color: #FFBABA;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    display: none;
+}
+
+label
+{
+    float: left;
+    text-align: right;
+    margin-right: 15px;
+    width: 100px;
+}
+
+.claro .dijitDialogTitleBar
+{
+    background-color: #456DA7;
+    background-image: none;
+    border: none;
+}
+
+.claro .dijitDialogTitle
+{   
+    color: #ffffff;
+}
+
+#g_TerraFlyMessageBarContainer
+{
+    border-radius: 0 0 20px 20px;
+    min-height: 50px;
+    background: #456DA7;
+    border-bottom: 2px solid black;
+    display: none;
+}
+
+#g_TerraFlyMessageBar
+{
+    padding: 5px 10px;
+    color: White;
+}
+
+.color 
+{
+    width:50px;
+}
+
+.number 
+{
+    width:50px;
+}
+
+.url
+{
+    width:350px;
+}
+
+.dojoxDock
+{   
+    background: #405072;
+}
+
+.axis path, .axis line
+{
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.point
+{
+    stroke: #000;
+}
+
+.legendColor
+{
+    width: 30px;
+    border: solid 1px black;
+}
+
+.legendValue
+{
+    text-align: center;
+}
+
+.legend
+{
+    width: 175px;
+    border: 1px solid black;
+}
+
+.description
+{
+    padding:7px;
+    border:double 4px #456DA7;
+    background-color: #f5f5f5;
+    margin-bottom: 20px;
+}

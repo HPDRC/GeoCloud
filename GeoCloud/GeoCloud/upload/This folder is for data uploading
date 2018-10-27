@@ -1,0 +1,6 @@
+﻿DO NOT REMOVE THIS FILE!!
+I created this file not only for description, but also for the bug the VS publish does not copy a empty folder to the target directory.
+
+
+PLEASE:
+mofidy the permission of IIS_IUSRS for this folder to 'full control'

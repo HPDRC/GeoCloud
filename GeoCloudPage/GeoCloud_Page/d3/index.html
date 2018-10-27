@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 examples</title>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<style>
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				background-color: teal;
+				margin-right: 2px;
+			}
+			
+			svg {
+				display: block;
+				margin: 10px;
+				border: 1px solid black;
+			}
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var dataset = [];
+			for(var i = 0; i < 10; i++ ) {
+				dataset.push(Math.random() * 25);
+			}
+			/*
+			// creates paragraphs for each item in dataset
+			d3.select("body").selectAll("p")
+				.data(dataset)
+				.enter()
+				.append("p")
+				.style("color", function(d) {
+					if(d > 15) {
+						return "red";
+					}else{
+						return "black";
+					}
+				})
+				.text(function(d) { return d;});
+			*/
+			/*
+			// creates a div that looks like a bar for each element
+			d3.select("body").selectAll("div")
+				.data(dataset)
+				.enter()
+				.append("div")
+				.attr("class", "bar")
+				.style("height", function(d) {
+					return (d * 5) + "px";
+				});
+			*/
+			
+			/*
+			var w = 500;
+			var h = 50;
+			
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+				
+			var circles = svg.selectAll("circle")
+							 .data(dataset)
+							 .enter()
+							 .append("circle");
+							 
+			circles.attr("cx", function(d, i) {
+						return (i * 50) + 25;
+					})
+					.attr("cy", h/2)
+					.attr("r", function(d) {
+						return d;
+					});
+			*/
+			
+			var w = 500;
+			var h = 200;
+			var barPadding = 1;
+			
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+						
+			svg.selectAll("rect")
+				.data(dataset)
+				.enter()
+				.append("rect")
+				.attr("x", function(d, i) {
+					return i * (w / dataset.length);
+				})
+				.attr("y", function(d) {
+					return h - (d * 4);
+				})
+				.attr("width", w / dataset.length - barPadding)
+				.attr("height", function(d) {
+					return (d * 4);
+				})
+				.attr("fill", function(d) {
+					return "rgb(0, 0, " + (Math.round(d) * 10) + ")";
+				});
+				
+			svg.selectAll("text")
+				.data(dataset)
+				.enter()
+				.append("text")
+				.text(function(d) {
+					return Math.round(d);
+				})
+				.attr("x", function(d, i) {
+					return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2 ;
+				})
+				.attr("y", function(d) {
+					return h - (d * 4) + 15;
+				})
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "11px")
+				.attr("fill", "white")
+				.attr("text-anchor", "middle");
+			
+			
+			var points = [
+                  [ 5,     20 ],
+                  [ 480,   90 ],
+                  [ 250,   50 ],
+                  [ 100,   33 ],
+                  [ 330,   95 ],
+                  [ 410,   12 ],
+                  [ 475,   44 ],
+                  [ 25,    67 ],
+                  [ 85,    21 ],
+                  [ 220,   88 ]
+              ];
+			  
+			var scatterplot = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+						
+			scatterplot.selectAll("circle")
+				.data(points)
+				.enter()
+				.append("circle")
+				.attr("cx", function(d) {
+					return d[0];
+				})
+				.attr("cy", function(d) {
+					return d[1];
+				})
+				.attr("r", function(d) {
+					return Math.sqrt(h - d[1]);
+				});
+				
+			scatterplot.selectAll("text")
+				.data(points)
+				.enter()
+				.append("text")
+				.text(function(d) {
+					return d[0] + ", " + d[1];
+				})
+				.attr("x", function(d) {
+					return d[0] + Math.sqrt(h - d[1]);
+				})
+				.attr("y", function(d) {
+					return d[1];
+				})
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "11px")
+				.attr("fill", "red");
+				
+			var padding = 25;	
+			var xScale = d3.scale.linear()
+								.domain([0, d3.max(points, function(d) { return d[0]; })])
+								.range([padding, w - padding * 2]);
+								
+			var yScale = d3.scale.linear()
+								.domain([0, d3.max(points, function(d) { return d[1]; })])
+								.range([h - padding, padding]);
+								
+			var rScale = d3.scale.linear()
+								.domain([0, d3.max(points, function(d) { return d[1]; })])
+								.range([2, 5]);
+												
+			var scatterplot2 = d3.select("body")
+					.append("svg")
+					.attr("width", w)
+					.attr("height", h);
+					
+			scatterplot2.selectAll("circle")
+				.data(points)
+				.enter()
+				.append("circle")
+				.attr("cx", function(d) {
+					return xScale(d[0]);
+				})
+				.attr("cy", function(d) {
+					return yScale(d[1]);
+				})
+				.attr("r", function(d) {
+					return rScale(d[1]);
+				});
+				
+			scatterplot2.selectAll("text")
+				.data(points)
+				.enter()
+				.append("text")
+				.text(function(d) {
+					return d[0] + ", " + d[1];
+				})
+				.attr("x", function(d) {
+					return xScale(d[0] + Math.sqrt(h - d[1]));
+				})
+				.attr("y", function(d) {
+					return yScale(d[1]);
+				})
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "11px")
+				.attr("fill", "red");
+			
+
+
+			var xAxis = d3.svg.axis()
+							.scale(xScale)
+							.orient("bottom")
+							.ticks(5);
+							
+			var yAxis = d3.svg.axis()
+							.scale(yScale)
+							.orient("left")
+							.ticks(5);
+							
+			var scatterplot3 = d3.select("body")
+					.append("svg")
+					.attr("width", w)
+					.attr("height", h);
+					
+			scatterplot3.selectAll("circle")
+				.data(points)
+				.enter()
+				.append("circle")
+				.attr("cx", function(d) {
+					return xScale(d[0]);
+				})
+				.attr("cy", function(d) {
+					return yScale(d[1]);
+				})
+				.attr("r", function(d) {
+					return rScale(d[1]);
+				});
+				
+			scatterplot3.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0, " + (h - padding) + ")")
+				.call(xAxis);
+				
+			scatterplot3.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + padding + ", 0)")
+				.call(yAxis);
+			
+
+			var color = d3.scale.quantize()
+                                        .range(["rgb(237,248,233)","rgb(186,228,179)",
+                                                        "rgb(116,196,118)","rgb(49,163,84)",
+                                                        "rgb(0,109,44)"]);
+			color.domain([0, 100]);
+			var map = d3.select("body")
+					.append("svg")
+					.attr("width", 500)
+					.attr("height", 500);
+			
+
+			var projection = d3.geo.albersUsa()
+								.translate([-1000, -550])
+								.scale([5000]);
+			var path = d3.geo.path()
+							.projection(projection);
+					
+			d3.json("florida.json", function(json) {
+			
+				color.domain([
+					d3.min(json.features, function(d) { return d.properties.med_age }),
+					d3.max(json.features, function(d) { return d.properties.med_age })
+				]);
+				map.selectAll("path")
+					.data(json.features)
+					.enter()
+					.append("path")
+					.attr("d", path)
+					.style("fill", function(d) {
+						var value = d.properties.med_age;
+						
+						return color(value);
+					});
+			});
+			
+			var map2 = d3.select("body")
+					.append("svg")
+					.attr("width", 700)
+					.attr("height", 500);
+					
+			var projection2 = d3.geo.albersUsa()
+								.translate([-750, -525])
+								.scale([5000]);
+								
+			var path2 = d3.geo.path()
+							.projection(projection2);
+							
+			var color2 = d3.scale.quantize()
+										.domain([0.58, 0.779, 0.962, 1.065, 1.260, 1.352, 1.736])
+                                        .range(["#0000ff", "#2400db", 
+										"#4900b6", "#6d0092", 
+										"#92006d", "#b60049", 
+										"#db0024", "#ff0000"]);
+										
+					
+			d3.json("flcancermort.json", function(json) {
+			
+				map2.selectAll("path")
+					.data(json.features)
+					.enter()
+					.append("path")
+					.attr("d", path2)
+					.style("fill", function(d) {
+						var value = d.properties.mortality;
+						
+						return color2(value);
+					});
+			});
+			
+			d3.json("flcancerclust.json", function(json) {
+			
+				map2.selectAll("circle")
+					.data(json.features)
+					.enter()
+					.append("circle")
+					.attr("cx", function(d) {
+						var proj = projection2(d.geometry.coordinates);
+						return proj[0];
+					})
+					.attr("cy", function(d) {
+						var proj = projection2(d.geometry.coordinates);
+						return proj[1];
+					})
+					.attr("r", 4)
+					.style("fill", "yellow")
+					.style("opacity", 0.75);
+			});
+		</script>
+	</body>
+</html>
